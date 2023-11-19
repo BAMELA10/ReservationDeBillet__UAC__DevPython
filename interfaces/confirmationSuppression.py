@@ -1,0 +1,1 @@
+#boite de confirmation de suppression
