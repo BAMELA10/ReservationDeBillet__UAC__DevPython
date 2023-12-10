@@ -1,14 +1,9 @@
-#fenetre principale du profil d'utilisateur
-import tkinter as Tk
+import interfaces.Home as home
+#import interfaces.opening as openg
+import tkinter as tk
 
-class principalClasse:
-    def __init__(self, windows):
-        self.windows = windows
-        self.windows.title(" Home ")
-        self.windows.geometry("1024x720")
-        self.windows.resizable(False, False)
-        
-fenetre = Tk.Tk()
-fenetre1 = principalClasse(fenetre)
-fenetre.mainloop()
-         
+#fenetre principale du profil d'utilisateur
+
+if __name__ == '__main__':
+    pass
+                
