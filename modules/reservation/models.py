@@ -3,30 +3,12 @@ import datetime as dt
 import random
 import string as st
 
-class reservation_ticket:
-    def __init__(self, id_event, id_reservation,quantity_ticket):
-        self.id_event = id_event
-        self.id_reservation = id_reservation
-        self.quantity_ticket = quantity_ticket   
-
-    def create_reservation_ticket(self):
-        connector.ping()
-        cursor = connector.cursor()
-        cursor.execute("insert into reservation_ticket (id_event, id_reservation, quantity_ticket) values (%s,%s,%s)", (self.id_event, self.id_reservation, self.quantity_ticket))
-        connector.commit()
-        print("reservation created")
-        connector.close()
-    def edit_reservation_ticket(self):
-        pass
-    def delete_reservation_ticket(self):
-        pass
-
-
 class reservation:
-    def __init__(self,id_users, code=None, date_reservation=None):
+    def __init__(self,id_users,id_event, code=None, date_reservation=None):
         self.code = self.generate_unique_code()
         self.date_reservation = dt.datetime.now()
         self.id_users = id_users
+        self.id_event = id_event
         
     def code(self):
         character = ''.join(random.choice(st.ascii_letters.upper()) for i in range (5))
@@ -50,7 +32,7 @@ class reservation:
         cursor.execute("select * from reservation where code = (%s)", (self.code,))
         result = cursor.fetchone()
         if result is None:
-            cursor.execute("insert into reservation (code, date_reservation, id_users) values (%s,%s,%s)", (self.code, self.date_reservation, self.id_users))
+            cursor.execute("insert into reservation (code, date_reservation, id_users, id_event) values (%s,%s,%s)", (self.code, self.date_reservation, self.id_users,self.id_event))
             connector.commit()
             print("reservation created")
         else:
@@ -59,10 +41,11 @@ class reservation:
     def edit_reservation(**args):
         connector.ping()
         pass
-    def delete_reservation(**args):
+    def cancel_reservation(**args):
         connector.ping()
         pass
 
+''' 
 class reservation_final:
     def create_reservation_final(self):
         connector.ping()
@@ -80,10 +63,22 @@ class reservation_final:
     def edit_reservation_final(self):
         pass
     def delete_reservation_final(self):
+        pass 
+class reservation_ticket:
+    def __init__(self, id_event, id_reservation,quantity_ticket):
+        self.id_event = id_event
+        self.id_reservation = id_reservation
+        self.quantity_ticket = quantity_ticket   
+
+    def create_reservation_ticket(self):
+        connector.ping()
+        cursor = connector.cursor()
+        cursor.execute("insert into reservation_ticket (id_event, id_reservation, quantity_ticket) values (%s,%s,%s)", (self.id_event, self.id_reservation, self.quantity_ticket))
+        connector.commit()
+        print("reservation created")
+        connector.close()
+    def edit_reservation_ticket(self):
         pass
-
-
-
-
-''' reservation_ticket1 = reservation_ticket(1, 2, 40)
-reservation_ticket1.create_reservation_ticket() '''
+    def delete_reservation_ticket(self):
+        pass
+ '''

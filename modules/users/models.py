@@ -1,9 +1,9 @@
-from ...connect import connector
+from connect import connector
 import hashlib
 from hmac import compare_digest
 import mysql.connector as myc
 class users:
-    def __init__(self, username, status, password, email=None, phone=None):
+    def __init__(self, username, password=None, status=None, email=None, phone=None):
         self.username = username
         self.email = email
         self.password = self._encrypt_password(password)
@@ -38,8 +38,10 @@ class users:
             cursor.execute("update users set username = %s, status = %s, password = %s, email =%s, phone= %s where username =%s", (self.username, self.status, self.password, self.email, self.phone, username))
             connector.commit()
             print("user edited")
+            return True
         else:
-            print("lose operation")    
+            print("lose operation")
+            return False    
     def delete_users(self):
         connector.ping()
         cursor = connector.cursor()
@@ -49,9 +51,12 @@ class users:
             cursor.execute("delete from users where username = %s", (self.username,))
             connector.commit()
             print("user deleted")
+            return True
+            
         else:
             print("lose operation")
-            
+            return False
+    
     def login_user(self):
         connector.ping()
         cursor = connector.cursor()
@@ -68,20 +73,24 @@ class users:
             else:
                 print("incorrect username or password")
                 return False 
-            
+    
+    
+    
+    
+'''     
 var1 = input("username")
 var2 = input("new_password")
 var3 = input("new_status")
-''' 
+
 var4 = input("new_email")
 var5 = input("new_phone")  '''
 '''
-var6 = input("new_username")'''
+var6 = input("new_username")
 
 user = users(var1, var3, var2)
 print(user.password)
 #user.create_users()
-user.delete_users()
+user.delete_users()'''
 #user.edit_users(var1)
 """
 banzet

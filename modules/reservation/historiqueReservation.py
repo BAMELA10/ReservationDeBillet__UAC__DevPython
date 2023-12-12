@@ -1,6 +1,12 @@
 import tkinter as Tk
 import tkinter.ttk as ttk
-
+import models
+from connect import connector
+def reservation_all():
+        connector.ping()
+        cursor = connector.cursor()
+        cursor.execute("select code, date_reservation, status_reservation,id_event,id_users from reservation")
+        return cursor.fetchall()
 class listingReservation:
     def __init__(self, windows):
         self.windows = windows
@@ -31,20 +37,21 @@ class listingReservation:
         self.rechercher = ttk.Button(self.frame1, text="Rechercher", width=10)
         self.rechercher.grid(column=1 , row=0)
         
-        cols = ("first", "second", "third", "last","five","select")
+        cols = ("Code", "Date reservation", "Statut", "Evenement","Utilisateur",)
         self.data_grid = ttk.Treeview(self.frame2, show="headings",columns=cols, height=20)
         
         for col in cols:
-            self.data_grid.column(col, width=190)
+            self.data_grid.column(col, width=200, anchor="center")
             self.data_grid.heading(col, text=col)
             
-        self.data_grid.column("select", width=50)
-        self.data_grid.heading("select", text="select")
+        rows = reservation_all()
+        for row in rows:
+            self.data_grid.insert("","end",value=row)
         self.data_grid.grid(column=0 , row=0)
         
         self.button1 = ttk.Button(self.frame3, text="Ajouter")
         self.button1.grid(row=3, column=0, padx=10, pady=30)
-        self.button2 = ttk.Button(self.frame3, text="Supprimer")
+        self.button2 = ttk.Button(self.frame3, text="Annuler")
         self.button2.grid(row=3, column=1,padx=10, pady=30)
         self.button3 = ttk.Button(self.frame3, text="Modifier")
         self.button3.grid(row=3, column=2,padx=10, pady=30)
