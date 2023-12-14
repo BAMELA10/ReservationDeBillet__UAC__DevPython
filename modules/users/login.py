@@ -2,8 +2,8 @@
 #fenetre de creation du user
 import tkinter as tk
 from tkinter import messagebox
-from models import *
-from connect import connector
+from .models import *
+from .connect import connector
 #import center as ct
 class Login:
     def __init__(self, windows):
@@ -66,16 +66,17 @@ class Login:
         username = str(self.champ1.get())
         password = str(self.champ2.get())
         user = users(username, password)
-        print(user.password)
         result = user.login_user()
-        
         if result == True:
             messagebox.showinfo("connexion","connected")
+            return [True, user.username]
         else:
             messagebox.showinfo("connexion", "nom d'utilisateur ou mot de passe incorrect")
+            return [False]  
+        
             
 
-windows = tk.Tk()
+''' windows = tk.Tk()
 windows1 = Login(windows)
-''' ct.center(windows) '''
-windows.mainloop()
+
+windows.mainloop() '''

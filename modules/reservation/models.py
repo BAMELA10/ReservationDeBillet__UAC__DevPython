@@ -4,11 +4,12 @@ import random
 import string as st
 
 class reservation:
-    def __init__(self,id_users,id_event, code=None, date_reservation=None):
+    def __init__(self,id_users,id_event,status_reservation, code=None, date_reservation=None):
         self.code = self.generate_unique_code()
-        self.date_reservation = dt.datetime.now()
+        self.date_reservation = date_reservation
         self.id_users = id_users
         self.id_event = id_event
+        self.status_reservation = status_reservation
         
     def code(self):
         character = ''.join(random.choice(st.ascii_letters.upper()) for i in range (5))
@@ -32,53 +33,31 @@ class reservation:
         cursor.execute("select * from reservation where code = (%s)", (self.code,))
         result = cursor.fetchone()
         if result is None:
-            cursor.execute("insert into reservation (code, date_reservation, id_users, id_event) values (%s,%s,%s)", (self.code, self.date_reservation, self.id_users,self.id_event))
+            cursor.execute("insert into reservation (code, status_reservation, date_reservation, id_users, id_event) values (%s,%s,%s,%s)", (self.code,self.status_reservation, self.date_reservation, self.id_users,self.id_event))
             connector.commit()
             print("reservation created")
         else:
             print("lose operation")
         
-    def edit_reservation(**args):
-        connector.ping()
-        pass
-    def cancel_reservation(**args):
-        connector.ping()
-        pass
-
-''' 
-class reservation_final:
-    def create_reservation_final(self):
+    def edit_reservation(self, code):
         connector.ping()
         cursor = connector.cursor()
-        reservation1 = reservation(1)
-        reservation1.create_reservation()
-        cursor.execute("select id from reservation order by id desc limit 1")
+        cursor.execute("select * from reservation where code = %s", (code,))
         result = cursor.fetchone()
-        reservation_ticket1 = reservation_ticket(1, int(result[0]), 40)
-        reservation_ticket1.create_reservation_ticket()
-        print("creation complet")
+        if cursor is not None:
+            cursor.execute("update reservation set id_users = %s, id_event = %s where code = %s" , (self.id_users, self.id_event, code))
+            connector.commit()
+            print("reservation edited")
+            return True
+        else:
+            print("lose operation")
+            return False    
         
-    def edit_reservation_final(self):
-        pass
-    def edit_reservation_final(self):
-        pass
-    def delete_reservation_final(self):
-        pass 
-class reservation_ticket:
-    def __init__(self, id_event, id_reservation,quantity_ticket):
-        self.id_event = id_event
-        self.id_reservation = id_reservation
-        self.quantity_ticket = quantity_ticket   
-
-    def create_reservation_ticket(self):
+        
+    def cancel_reservation(self, code):
         connector.ping()
         cursor = connector.cursor()
-        cursor.execute("insert into reservation_ticket (id_event, id_reservation, quantity_ticket) values (%s,%s,%s)", (self.id_event, self.id_reservation, self.quantity_ticket))
+        cursor.execute("update reservation set status_reservation = %s where code = %s", ("Annulé", code))
         connector.commit()
-        print("reservation created")
-        connector.close()
-    def edit_reservation_ticket(self):
-        pass
-    def delete_reservation_ticket(self):
-        pass
- '''
+        print("reservation canceled")
+        return True

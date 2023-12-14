@@ -1,4 +1,4 @@
-from connect import connector
+from .connect import connector
 import hashlib
 from hmac import compare_digest
 import mysql.connector as myc
@@ -62,7 +62,6 @@ class users:
         cursor = connector.cursor()
         cursor.execute("select password from users where username = %s", (self.username,))
         result = cursor.fetchone()
-        print(result[0])
         if result is None:
             print("incorrect username or password")
             return False

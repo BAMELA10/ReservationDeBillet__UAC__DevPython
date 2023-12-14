@@ -1,7 +1,7 @@
 import tkinter as Tk
 from tkinter import ttk, messagebox
-import models
-from connect import connector
+from .models import users
+from .connect import connector
 def users_all():
         connector.ping()
         cursor = connector.cursor()
@@ -143,7 +143,7 @@ class listingUser:
         status = str(champ_c3.get())
         email = str(champ_c4.get())
         telephone = int(champ_c5.get())
-        user = models.users(username, password, status,  email, telephone)
+        user = users(username, password, status,  email, telephone)
         user.create_users()
         form_usc.destroy()
         self.refresh()
@@ -248,7 +248,7 @@ class listingUser:
                                     ]
         user1_value = self.select_item()
         new_data = list_value
-        edit_user = models.users(new_data[0], "", new_data[1], new_data[2], new_data[3])
+        edit_user = users(new_data[0], "", new_data[1], new_data[2], new_data[3])
         result = edit_user.edit_users(user1_value[0])
         if result == True:
             messagebox.showinfo("edit", " success")
@@ -260,7 +260,7 @@ class listingUser:
         
     def delete_user_gui(self):
         user_value = self.select_item()
-        user = models.users(user_value[0],user_value[1],user_value[2],user_value[2],user_value[3])
+        user = users(user_value[0],user_value[1],user_value[2],user_value[2],user_value[3])
         result = user.delete_users()
         print(result)
         if result == True:

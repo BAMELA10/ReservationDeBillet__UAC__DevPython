@@ -253,7 +253,7 @@ class listingEvenement:
             messagebox.showinfo("delete","event not deleted")
         self.refresh()
           
-        
+          
 fenetre = Tk.Tk()
 fenetre1 = listingEvenement(fenetre)
 fenetre.mainloop()
