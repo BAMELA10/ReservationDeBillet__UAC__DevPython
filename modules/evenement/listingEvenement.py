@@ -4,10 +4,25 @@ import models
 from connect import connector
 import tkcalendar as tkc
 def event_all():
-        connector.ping()
-        cursor = connector.cursor()
-        cursor.execute("select code, intitulé, date_event, number_place from event")
-        return cursor.fetchall()
+    connector.ping()
+    cursor = connector.cursor()
+    cursor.execute("select code, intitulé, date_event, number_place, number_free_place from event")
+    return cursor.fetchall()
+    
+def auto_free_place_1():
+    connector.ping()
+    curseur = connector.cursor()
+    curseur.execute("update event join reservation on reservation.id_event = event.id set event.number_free_place = event.number_place - reservation.number_place where reservation.status_reservation = 'Considéré'")
+    connector.commit()
+    
+def auto_free_place_2():
+    connector.ping()
+    curseur = connector.cursor()
+    curseur.execute("update event join reservation on reservation.id_event = event.id set event.number_free_place = event.number_place + reservation.number_place where reservation.status_reservation = 'Annulé'")
+    connector.commit()
+    print("update number of place")
+
+
 class listingEvenement:
     def __init__(self, windows):
         self.windows = windows
@@ -38,12 +53,15 @@ class listingEvenement:
         self.rechercher = ttk.Button(self.frame1, text="Rechercher", width=10)
         self.rechercher.grid(column=1 , row=0)
         
-        cols = ("Code", "Intitulé", "Date de l'evenement", "Nombre de place")
+        cols = ("Code", "Intitulé", "Date de l'evenement", "Nombre de place", "Nombre de place libre")
         self.data_grid = ttk.Treeview(self.frame2, show="headings",columns=cols, height=20)
         
         for col in cols:
-            self.data_grid.column(col, width=190, anchor="center")
+            self.data_grid.column(col, width=200, anchor="center")
             self.data_grid.heading(col, text=col)
+        
+        auto_free_place_2()
+        auto_free_place_1()
         rows = event_all()
         for row in rows:
             self.data_grid.insert("","end",value=row)
@@ -61,6 +79,7 @@ class listingEvenement:
     def refresh(self):
         connector.ping()
         self.windows.destroy()
+        auto_free_place_1()
         rows = event_all()
         fenetre = Tk.Tk()
         fenetre1 = listingEvenement(fenetre)
@@ -71,7 +90,7 @@ class listingEvenement:
         intitule = str(champ_c1.get())
         data_event = str(champ_c2.get_date())
         number_place = str(champ_c3.get())
-        event = models.event(intitule, number_place,"",  data_event)
+        event = models.event(intitule, number_place,number_place,"",  data_event)
         event.create_event()
         windows1.destroy()
         self.refresh()
