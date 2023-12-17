@@ -2,7 +2,7 @@ from connect import connector
 import tkinter as tk
 from tkinter import ttk, messagebox
 import tkcalendar as tkc
-from models import *
+from .models import *
 import datetime as dt
 
 def reservation_all():
@@ -77,9 +77,9 @@ class listingReservation:
             self.data_grid.column(col, width=167, anchor="center")
             self.data_grid.heading(col, text=col)
             
-        rows = reservation_all_for_print()
-        for row in rows:
-            self.data_grid.insert("","end",value=row)
+        self.rows = reservation_all_for_print()
+        for self.row in self.rows:
+            self.data_grid.insert("","end",value=self.row)
         self.data_grid.grid(column=0 , row=0)
         
         self.button1 = ttk.Button(self.frame3, text="Ajouter", command=self.open_add_reservation)
@@ -368,8 +368,4 @@ class listingReservation:
         windows2.destroy()
         self.refresh()
         
-        
-fenetre = tk.Tk()
-fenetre1 = listingReservation(fenetre)
-fenetre.mainloop()
          

@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 #import center as ct
 class Home:
-    def __init__(self, windows):
+    def __init__(self, windows,username):
         self.windows = windows
         self.windows.title("Home")
         self.windows.geometry("1272x720")
@@ -64,8 +64,8 @@ class Home:
         self.button6.configure(font=('helvetica', 12))
         self.button6.grid( row=7, column=3,padx=0, pady=20, ipadx=0, ipady=5)
         
-        
-        TEXTE = "Bienvenue USER"
+        self.username = username
+        TEXTE = "Bienvenue {}".format(self.username)
         self.textx = tk.Label(self.frame3, bg='black',text=TEXTE, fg='red',width=60, height=5)
         self.textx.configure(font=("helvetica", 14), bd=0)
         self.textx.grid(row=0, column=0, padx=100, pady=10, ipadx=20, ipady=0)

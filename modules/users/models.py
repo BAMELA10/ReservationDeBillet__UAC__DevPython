@@ -25,8 +25,10 @@ class users:
             cursor.execute("insert into users (username, status, password, email, phone) values(%s,%s,%s,%s,%s)", (self.username, self.status, self.password, self.email, self.phone))
             connector.commit()
             print("user created")
+            return True
         else:
             print("lose operation")
+            return False
         connector.close()
 
     def edit_users(self,username):

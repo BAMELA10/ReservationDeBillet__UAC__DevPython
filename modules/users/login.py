@@ -6,8 +6,8 @@ from .models import *
 from .connect import connector
 #import center as ct
 class Login:
-    def __init__(self, windows):
-        self.windows = windows
+    def __init__(self):
+        self.windows = tk.Tk()
         self.windows.title("EventCreation")
         self.windows.geometry("800x400")
         self.windows.resizable(False, False)
@@ -61,20 +61,25 @@ class Login:
 
         self.btn_back = tk.Button(self.frame4, text="Annuler",width=15, bg="red", command=self.windows.destroy)
         self.btn_back.grid(column=1, row=5, pady=50)
+        self.windows.mainloop()
         
     def login_gui(self):
+        global username
         username = str(self.champ1.get())
         password = str(self.champ2.get())
         user = users(username, password)
         result = user.login_user()
         if result == True:
             messagebox.showinfo("connexion","connected")
-            return [True, user.username]
+            self.windows.destroy()
+            return [True]
         else:
             messagebox.showinfo("connexion", "nom d'utilisateur ou mot de passe incorrect")
             return [False]  
-        
-            
+    def get_username(self):
+        username = str(self.champ1.get())
+        return username
+   
 
 ''' windows = tk.Tk()
 windows1 = Login(windows)

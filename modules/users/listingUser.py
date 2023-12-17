@@ -268,8 +268,4 @@ class listingUser:
         else:
             messagebox.showinfo("delete","user not deleted")
         self.refresh()
-            
-fenetre = Tk.Tk()
-fenetre1 = listingUser(fenetre)
-fenetre.mainloop()
 #fenetre.mainloop()

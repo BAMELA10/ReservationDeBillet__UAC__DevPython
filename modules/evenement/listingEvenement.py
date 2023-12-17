@@ -1,7 +1,7 @@
 import tkinter as Tk
 from tkinter import ttk, messagebox
-import models
-from connect import connector
+from .models import *
+from .connect import connector
 import tkcalendar as tkc
 def event_all():
     connector.ping()
@@ -90,7 +90,7 @@ class listingEvenement:
         intitule = str(champ_c1.get())
         data_event = str(champ_c2.get_date())
         number_place = str(champ_c3.get())
-        event = models.event(intitule, number_place,number_place,"",  data_event)
+        event = event(intitule, number_place,number_place,"",  data_event)
         event.create_event()
         windows1.destroy()
         self.refresh()
@@ -252,7 +252,7 @@ class listingEvenement:
         print(list_value)
         event1_value = self.select_item()
         new_data = list_value
-        edit_event = models.event(new_data[0],new_data[1],"", new_data[2])
+        edit_event = event(new_data[0],new_data[1],"", new_data[2])
         result = edit_event.edit_event(event1_value[1])
         if result == True:
             messagebox.showinfo("edit", " success")
@@ -263,7 +263,7 @@ class listingEvenement:
     
     def delete_event_gui(self):
         event_value = self.select_item()
-        event = models.event(event_value[1],event_value[1],event_value[0],event_value[2])
+        event = event(event_value[1],event_value[1],event_value[0],event_value[2])
         result = event.delete_event()
         print(result)
         if result == True:
@@ -271,9 +271,4 @@ class listingEvenement:
         else:
             messagebox.showinfo("delete","event not deleted")
         self.refresh()
-          
-          
-fenetre = Tk.Tk()
-fenetre1 = listingEvenement(fenetre)
-fenetre.mainloop()
          
